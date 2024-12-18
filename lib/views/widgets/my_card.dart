@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-
+import '../../constants/app_string.dart';
 import '../../controller/home_controller.dart';
 import '../../constants/app_path.dart';
 
@@ -15,9 +15,7 @@ class MyCard extends GetView<HomeController> {
       decoration: const BoxDecoration(
         image: DecorationImage(
           colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
-          image: AssetImage(
-            'assets/images/cloud-in-blue-sky.jpg',
-          ),
+          image: AssetImage('assets/images/cloud-in-blue-sky.jpg'),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.only(
@@ -27,18 +25,16 @@ class MyCard extends GetView<HomeController> {
       ),
       child: Stack(
         children: <Widget>[
-          Container(
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(
-                  //todo:
-                  Icons.menu,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
+          AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(
+                //todo:
+                Icons.menu,
+                color: Colors.white,
               ),
+              onPressed: () {},
             ),
           ),
           Container(
@@ -56,7 +52,7 @@ class MyCard extends GetView<HomeController> {
                   color: Colors.white,
                 ),
                 hintStyle: const TextStyle(color: Colors.white),
-                hintText: 'Search'.toUpperCase(),
+                hintText: AppString.search.toUpperCase(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(color: Colors.white),
@@ -75,13 +71,13 @@ class MyCard extends GetView<HomeController> {
           Align(
             alignment: const Alignment(0.0, 1.0),
             child: SizedBox(
-              height: 10,
+              height: 80,
               width: 10,
               child: OverflowBox(
                 minWidth: 0.0,
                 maxWidth: MediaQuery.of(context).size.width,
                 minHeight: 0.0,
-                maxHeight: (MediaQuery.of(context).size.height / 4),
+                maxHeight: (MediaQuery.of(context).size.height * 0.35),
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -113,7 +109,6 @@ class MyCard extends GetView<HomeController> {
                                             color: Colors.black45,
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: 'flutterfonts',
                                           ),
                                     ),
                                   ),
@@ -128,7 +123,6 @@ class MyCard extends GetView<HomeController> {
                                           .copyWith(
                                             color: Colors.black45,
                                             fontSize: 16,
-                                            fontFamily: 'flutterfonts',
                                           ),
                                     ),
                                   ),
@@ -152,7 +146,6 @@ class MyCard extends GetView<HomeController> {
                                             .copyWith(
                                               color: Colors.black45,
                                               fontSize: 22,
-                                              fontFamily: 'flutterfonts',
                                             ),
                                       ),
                                       const SizedBox(height: 10),
@@ -162,8 +155,8 @@ class MyCard extends GetView<HomeController> {
                                             .textTheme
                                             .displayMedium!
                                             .copyWith(
-                                                color: Colors.black45,
-                                                fontFamily: 'flutterfonts'),
+                                              color: Colors.black45,
+                                            ),
                                       ),
                                       Text(
                                         'min: ${(controller.currentWeatherData.main!.tempMin! - 273.15).round().toString()}\u2103 / max: ${(controller.currentWeatherData.main!.tempMax! - 273.15).round().toString()}\u2103',
@@ -174,36 +167,31 @@ class MyCard extends GetView<HomeController> {
                                               color: Colors.black45,
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: 'flutterfonts',
                                             ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.only(right: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 40),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      SizedBox(
-                                        width: 120,
-                                        height: 120,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15.0),
                                         child:
                                             LottieBuilder.asset(Images.cloudy),
                                       ),
-                                      Container(
-                                        child: Text(
-                                          'wind ${controller.currentWeatherData.wind!.speed} m/s',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                color: Colors.black45,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'flutterfonts',
-                                              ),
-                                        ),
+                                      Text(
+                                        'wind ${controller.currentWeatherData.wind!.speed} m/s',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: Colors.black45,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                     ],
                                   ),

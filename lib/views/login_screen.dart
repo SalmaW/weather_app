@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 result.startsWith('invalid-credential')) {
                               return;
                             }
-                            Get.offNamed(Routes.homeRoute);
+                            await Get.offNamed(Routes.homeRoute);
                           }
                         },
                         backgroundColor:
