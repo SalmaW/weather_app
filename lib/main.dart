@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/home',
       locale: const Locale('en'),
-      fallbackLocale: Locale('en'),
+      fallbackLocale: const Locale('en'),
       supportedLocales: const [
         Locale('en'),
         Locale('ar'),
@@ -41,9 +41,10 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      localeListResolutionCallback: (deviceLocal, supportedLocales) {
+      localeResolutionCallback: (deviceLocal, supportedLocales) {
         for (var local in supportedLocales) {
-          if (deviceLocal != null && local.languageCode == deviceLocal.lan) {
+          if (deviceLocal != null &&
+              local.languageCode == deviceLocal.languageCode) {
             return deviceLocal;
           }
         }
