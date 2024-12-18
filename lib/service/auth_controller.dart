@@ -1,19 +1,19 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'crud_controller.dart';
 
-class AuthService {
+class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Crud _crud = Crud();
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  
+  final RxBool isLoading = false.obs;
+  
   User? get currentUser => _auth.currentUser;
 
-  Future<String?> createUserWithEmailPassword(
-      String email, String password) async {
+  Future<String?> createUserWithEmailPassword(String email, String password) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -22,7 +22,6 @@ class AuthService {
 
       if (credential.user != null) {
         await addUsrToFireStore(credential.user!);
-
         return 'Account created successfully!';
       }
       return 'Account creation failed.';
@@ -38,8 +37,7 @@ class AuthService {
     }
   }
 
-  Future<String?> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<String?> signInWithEmailAndPassword(String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -77,16 +75,7 @@ class AuthService {
         'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      log('Error adding user to Firestore: $e');
+      log('Error adding user to FireStore: $e');
     }
   }
 }
-
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService();
-});
-
-final authStateProvider = StreamProvider<User?>((ref) {
-  return FirebaseAuth.instance.authStateChanges();
-});
-final loadingProvider = StateProvider<bool>((ref) => false);

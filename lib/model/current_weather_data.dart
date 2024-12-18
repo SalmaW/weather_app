@@ -9,7 +9,7 @@ class CurrentWeatherData{
   final Coord? coord;
   final List<Weather>? weather;
   final String? base;
-  final MainWeather? mainWeather;
+  final MainWeather? main;
   final Wind? wind;
   final int? visibility;
   final Clouds? clouds;
@@ -24,7 +24,7 @@ class CurrentWeatherData{
     this.coord,
     this.weather,
     this.base,
-    this.mainWeather,
+    this.main,
     this.wind,
     this.visibility,
     this.clouds,
@@ -42,17 +42,17 @@ class CurrentWeatherData{
     }
 
     return CurrentWeatherData(
-      coord: Coord.fromJson(json['coord']),
-      weather: (json['weather'] as List)
-          .map((w) => Weather.fromJson(w))
-          .toList() ,
+      coord: json['coord'] != null ? Coord.fromJson(json['coord']) : null,
+      weather: (json['weather'] as List?)
+          ?.map((w) => Weather.fromJson(w))
+          .toList(),
       base: json['base'],
-      mainWeather: MainWeather.fromJson(json['main']),
+      main: json['main'] != null ? MainWeather.fromJson(json['main']) : null,
       visibility: json['visibility'],
-      wind: Wind.fromJson(json['wind']),
-      clouds: Clouds.fromJson(json['clouds']),
+      wind: json['wind'] != null ? Wind.fromJson(json['wind']) : null,
+      clouds: json['clouds'] != null ? Clouds.fromJson(json['clouds']) : null,
       dt: json['dt'],
-      sys: Sys.fromJson(json['sys']),
+      sys: json['sys'] != null ? Sys.fromJson(json['sys']) : null,
       timezone: json['timezone'],
       id: json['id'],
       name: json['name'],

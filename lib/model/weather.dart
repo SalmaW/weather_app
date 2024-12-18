@@ -1,11 +1,10 @@
-class Weather{
- int? id;
- String? main, description,icon;
+class Weather {
+  int? id;
+  String? main, description, icon;
 
- Weather({   this.id,    this.main,    this.description,    this.icon});
+  Weather({this.id, this.main, this.description, this.icon});
 
- factory Weather.fromJson(Map<String, dynamic> json) {
-
+  factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       id: json["id"],
       main: json["main"],
@@ -14,7 +13,7 @@ class Weather{
     );
   }
 
- Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "id": id,
       "main": main,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../constants/app_path.dart';
 import '../../controller/home_controller.dart';
 import '../../model/current_weather_data.dart';
@@ -12,9 +11,9 @@ class MyList extends GetView<HomeController> {
     return Container(
       height: 150,
       child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) => const VerticalDivider(
+        separatorBuilder: (context, index) => VerticalDivider(
           color: Colors.transparent,
           width: 5,
         ),
@@ -46,7 +45,7 @@ class MyList extends GetView<HomeController> {
                     ),
                     Text(
                       (data != null)
-                          ? '${(data.mainWeather!.temp! - 273.15).round().toString()}\u2103'
+                          ? '${(data.main!.temp! - 273.15).round().toString()}\u2103'
                           : '',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 18,
@@ -61,7 +60,7 @@ class MyList extends GetView<HomeController> {
                       child: LottieBuilder.asset(Images.cloudy),
                     ),
                     Text(
-                      (data != null) ? "${data.weather![0].description}" : '',
+                      (data != null) ? '${data.weather![0].description}' : '',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Colors.black45,
                             fontFamily: 'flutterfonts',

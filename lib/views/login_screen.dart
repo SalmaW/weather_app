@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:weather_app/views/widgets/custom_button.dart';
 import 'package:weather_app/views/widgets/custom_text_field.dart';
 import '../../constants/app_routes.dart';
-import '../../constants/app_style.dart';
 import '../constants/app_string.dart';
 import '../service/auth_controller.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  final AuthController authController = Get.find<AuthController>();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final loading = ref.watch(loadingProvider);
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.primaryColor,
@@ -31,10 +29,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         centerTitle: true,
         title: Text(
           AppString.login,
-          style: AppStyle.poppins600style18.copyWith(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: theme.textTheme.bodyLarge?.color,
+            color: theme.textTheme.bodyLarge?.color ?? Colors.black,
           ),
         ),
       ),
@@ -59,17 +57,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                     inputTextStyle: TextStyle(
-                      color: theme.bottomNavigationBarTheme.selectedItemColor,
+                      color: theme.bottomNavigationBarTheme.selectedItemColor ??
+                          Colors.blue,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.text,
-                    /*
-                    textInputAction: TextInputAction.done, // Submit form
-                    keyboardType: TextInputType.text,
-
-                     */
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -86,76 +80,60 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       return null;
                     },
                     inputTextStyle: TextStyle(
-                      color: theme.bottomNavigationBarTheme.selectedItemColor,
+                      color: theme.bottomNavigationBarTheme.selectedItemColor ??
+                          Colors.blue,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                     textInputAction: TextInputAction.done,
-                    // Submit form
                     keyboardType: TextInputType.text,
                     obscureText: true,
                   ),
                 ),
                 const SizedBox(height: 20),
-                loading
+                Obx(() => authController.isLoading.value
                     ? const CircularProgressIndicator()
                     : CustomElevatedButton(
                         text: AppString.login,
-                        onPressed: loading
-                            ? null
-                            : () async {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  final email = emailController.text;
-                                  final password = passwordController.text;
+                        onPressed: () async {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            final email = emailController.text;
+                            final password = passwordController.text;
 
-                                  ref.read(loadingProvider.notifier).state =
-                                      true;
+                            authController.isLoading.value = true;
 
-                                  final authService =
-                                      ref.read(authServiceProvider);
-                                  final result = await authService
-                                      .signInWithEmailAndPassword(
-                                          email, password);
-                                  ref.read(loadingProvider.notifier).state =
-                                      false;
+                            final result = await authController
+                                .signInWithEmailAndPassword(email, password);
+                            authController.isLoading.value = false;
 
-                                  if (result != null) {
-                                    if (context.mounted) {
-                                      _showSnackBar(
-                                          context,
-                                          result,
-                                          result.startsWith('Error')
-                                              ? Colors.red
-                                              : Colors.green);
-                                    }
-                                  }
-                                  if (result != null &&
-                                      result.startsWith('invalid-credential')) {
-                                    return;
-                                  }
-                                  if (context.mounted) {
-                                    Navigator.pushReplacementNamed(
-                                      context,
-                                      Routes.homeRoute,
-                                    );
-                                  }
-                                }
-                              },
+                            if (result != null) {
+                              if (context.mounted) {
+                                _showSnackBar(
+                                    context,
+                                    result,
+                                    result.startsWith('Error')
+                                        ? Colors.red
+                                        : Colors.green);
+                              }
+                            }
+                            if (result != null &&
+                                result.startsWith('invalid-credential')) {
+                              return;
+                            }
+                            Get.offNamed(Routes.homeRoute);
+                          }
+                        },
                         backgroundColor:
                             theme.bottomNavigationBarTheme.selectedItemColor!,
-                      ),
+                      )),
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      Routes.signUpRoute,
-                    );
+                    Get.offNamed(Routes.signUpRoute);
                   },
-                  child: Text(
+                  child: const Text(
                     AppString.noAccount,
-                    style: AppStyle.poppins500style14,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ),
               ],

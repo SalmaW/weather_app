@@ -33,6 +33,7 @@ class MyCard extends GetView<HomeController> {
               elevation: 0,
               leading: IconButton(
                 icon: const Icon(
+                  //todo:
                   Icons.menu,
                   color: Colors.white,
                 ),
@@ -144,7 +145,7 @@ class MyCard extends GetView<HomeController> {
                                     children: <Widget>[
                                       Text(
                                         controller.currentWeatherData
-                                            .weather![0].description,
+                                            .weather![0].description!,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -156,7 +157,7 @@ class MyCard extends GetView<HomeController> {
                                       ),
                                       const SizedBox(height: 10),
                                       Text(
-                                        '${(controller.currentWeatherData.mainWeather!.temp - 273.15).round().toString()}\u2103',
+                                        '${(controller.currentWeatherData.main!.temp! - 273.15).round().toString()}\u2103',
                                         style: Theme.of(context)
                                             .textTheme
                                             .displayMedium!
@@ -165,7 +166,7 @@ class MyCard extends GetView<HomeController> {
                                                 fontFamily: 'flutterfonts'),
                                       ),
                                       Text(
-                                        'min: ${(controller.currentWeatherData.mainWeather!.tempMin - 273.15).round().toString()}\u2103 / max: ${(controller.currentWeatherData.mainWeather!.tempMax - 273.15).round().toString()}\u2103',
+                                        'min: ${(controller.currentWeatherData.main!.tempMin! - 273.15).round().toString()}\u2103 / max: ${(controller.currentWeatherData.main!.tempMax! - 273.15).round().toString()}\u2103',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!

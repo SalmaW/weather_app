@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 
 import '../constants/app_routes.dart';
 import '../constants/app_string.dart';
@@ -8,25 +8,25 @@ import 'login_screen.dart';
 import 'widgets/custom_button.dart';
 import 'widgets/custom_text_field.dart';
 
-class SignUpPage extends ConsumerStatefulWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends ConsumerState<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final AuthController authController = Get.find<AuthController>();
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final loading = ref.watch(loadingProvider);
     return Scaffold(
       backgroundColor: theme.primaryColor,
       appBar: AppBar(
@@ -122,47 +122,36 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                loading
+                Obx(() => authController.isLoading.value
                     ? const CircularProgressIndicator()
                     : CustomElevatedButton(
                         text: AppString.signUp,
-                        onPressed: loading
-                            ? null
-                            : () async {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  final email = emailController.text;
-                                  final password = passwordController.text;
+                        onPressed: () async {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            final email = emailController.text;
+                            final password = passwordController.text;
 
-                                  ref.read(loadingProvider.notifier).state =
-                                      true;
+                            authController.isLoading.value = true;
 
-                                  final authService =
-                                      ref.read(authServiceProvider);
-                                  final result = await authService
-                                      .createUserWithEmailPassword(
-                                          email, password);
+                            final result = await authController
+                                .createUserWithEmailPassword(email, password);
 
-                                  ref.read(loadingProvider.notifier).state =
-                                      false; // Stop loading
+                            authController.isLoading.value = false;
 
-                                  if (result != null) {
-                                    _showSnackBar(
-                                        context,
-                                        result,
-                                        result.startsWith('Error')
-                                            ? Colors.red
-                                            : Colors.green);
-                                  }
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    Routes.loginRoute,
-                                  );
-                                }
-                              },
+                            if (result != null) {
+                              _showSnackBar(
+                                  context,
+                                  result,
+                                  result.startsWith('Error')
+                                      ? Colors.red
+                                      : Colors.green);
+                            }
+                            Get.offNamed(Routes.loginRoute);
+                          }
+                        },
                         backgroundColor:
                             theme.bottomNavigationBarTheme.selectedItemColor!,
-                      ),
+                      )),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
