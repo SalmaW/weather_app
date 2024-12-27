@@ -26,7 +26,7 @@ class HomeBinding extends Bindings {
             position.latitude, position.longitude);
 
         if (placemarks.isNotEmpty) {
-          final city = placemarks.first.locality ?? '';
+          final city = placemarks.first.locality ?? 'cairo';
           return HomeController(city: city);
         }
       } catch (e) {

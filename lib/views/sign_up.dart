@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../constants/app_routes.dart';
 import '../constants/app_string.dart';
 import '../service/auth_controller.dart';
-import 'login_screen.dart';
 import 'widgets/custom_button.dart';
 import 'widgets/custom_text_field.dart';
 
@@ -30,18 +28,19 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       backgroundColor: theme.primaryColor,
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: Semantics(
-            label: "Sign up page",
-            child: Text(
-              AppString.signUp,
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: theme.textTheme.bodyLarge?.color),
-            ),
-          )),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Semantics(
+          label: "Sign up page",
+          child: Text(
+            AppString.signUp,
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: theme.textTheme.bodyLarge?.color),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -69,9 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       fontWeight: FontWeight.w500,
                     ),
                     textInputAction: TextInputAction.next,
-                    // Improves navigation between fields
-                    keyboardType:
-                        TextInputType.text, // Improves user experience
+                    keyboardType: TextInputType.text,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -154,10 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       )),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
-                    );
+                    Get.offNamed(Routes.loginRoute);
                   },
                   child: const Text(AppString.haveAnAccount,
                       style:

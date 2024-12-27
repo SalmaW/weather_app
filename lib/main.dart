@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return ProviderScope(
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.loginRoute,
+        initialRoute: Routes.homeRoute,
         theme: ThemeData(
           primaryColor: Colors.white,
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(

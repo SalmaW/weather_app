@@ -8,12 +8,13 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Crud _crud = Crud();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+
   final RxBool isLoading = false.obs;
-  
+
   User? get currentUser => _auth.currentUser;
 
-  Future<String?> createUserWithEmailPassword(String email, String password) async {
+  Future<String?> createUserWithEmailPassword(
+      String email, String password) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -37,7 +38,8 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<String?> signInWithEmailAndPassword(String email, String password) async {
+  Future<String?> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -71,8 +73,8 @@ class AuthController extends GetxController {
     try {
       await _firestore.collection('users').doc(user.uid).set({
         'email': user.email,
-        'uid': user.uid,
-        'createdAt': FieldValue.serverTimestamp(),
+        'userId': user.uid,
+        'timeStamp': FieldValue.serverTimestamp(),
       });
     } catch (e) {
       log('Error adding user to FireStore: $e');

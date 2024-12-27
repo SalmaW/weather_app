@@ -138,8 +138,9 @@ class MyCard extends GetView<HomeController> {
                                   child: Column(
                                     children: <Widget>[
                                       Text(
-                                        controller.currentWeatherData
-                                            .weather![0].description!,
+                                        controller.currentWeatherData.weather?.isNotEmpty == true
+                                            ? controller.currentWeatherData.weather![0].description ?? 'No description available'
+                                            : 'No description available',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -150,7 +151,7 @@ class MyCard extends GetView<HomeController> {
                                       ),
                                       const SizedBox(height: 10),
                                       Text(
-                                        '${(controller.currentWeatherData.main!.temp! - 273.15).round().toString()}\u2103',
+                                        '${(controller.currentWeatherData.main?.temp ?? 273.15 - 273.15).round().toString()}\u2103',
                                         style: Theme.of(context)
                                             .textTheme
                                             .displayMedium!
@@ -159,7 +160,7 @@ class MyCard extends GetView<HomeController> {
                                             ),
                                       ),
                                       Text(
-                                        'min: ${(controller.currentWeatherData.main!.tempMin! - 273.15).round().toString()}\u2103 / max: ${(controller.currentWeatherData.main!.tempMax! - 273.15).round().toString()}\u2103',
+                                        'min: ${(controller.currentWeatherData.main?.tempMin ?? 273.15 - 273.15).round().toString()}\u2103 / max: ${(controller.currentWeatherData.main?.tempMax ?? 273.15 - 273.15).round().toString()}\u2103',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -183,7 +184,7 @@ class MyCard extends GetView<HomeController> {
                                             LottieBuilder.asset(Images.cloudy),
                                       ),
                                       Text(
-                                        'wind ${controller.currentWeatherData.wind!.speed} m/s',
+                                        'wind ${controller.currentWeatherData.wind?.speed ?? 0} m/s',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
